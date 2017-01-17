@@ -44,8 +44,11 @@ echo("<br>level : $_COOKIE[user_lv]");
  - 5 < user_lv < 6인 값을 쿠키에 설정하여 호출
  - Hint : 숫자를 제외한 "." 문자도 사용 가능
 """
+import traceback
 import urllib2
+
 import CookieManager
+
 
 challengeUrl = "http://webhacking.kr/challenge/web/web-01/"
 
@@ -55,5 +58,14 @@ CookieManager.addCookie("user_lv=5.5")
 httpRequest = urllib2.Request(challengeUrl)
 httpRequest.add_header("Cookie", CookieManager.getCookie())
 
-httpResponse = urllib2.urlopen(httpRequest).read()
-print httpResponse
+httpConnection = None
+try:
+    httpConnection = urllib2.urlopen(httpRequest)
+    httpResponse = httpConnection.read()
+    print httpResponse
+except:
+    raise
+finally:
+    if httpConnection != None:
+        httpConnection.close()
+    
