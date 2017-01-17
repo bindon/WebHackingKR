@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 """
-[Challenge 1]
+[Challenge 1] - score 200
 http://webhacking.kr/challenge/web/web-01/
 
 1. 처음 접속 시 "index.phps" 부분에 a태그(anchor)링크가 걸려있고 클릭하면 php를 볼 수 있다.
