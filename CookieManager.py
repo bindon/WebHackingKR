@@ -2,8 +2,8 @@ import Cookie
 
 cookie = Cookie.SimpleCookie()
     
-def addCookie(requestCookie):
-    cookie.load(requestCookie)
+def addCookie(key, value):
+    cookie[key] = value
 
 def getCookie():
     return ' '.join(['%s=%s;' % (currentCookie.key, currentCookie.value) for currentCookie in cookie.values()])
