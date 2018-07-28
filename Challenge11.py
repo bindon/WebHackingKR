@@ -1,14 +1,35 @@
 #-*- coding: utf-8 -*-
+import urllib
 import urllib2
 import CookieManager
-import urllib
 
-challengeUrl = "http://webhacking.kr/challenge/codeing/code2.html"
-param = urllib.quote("1abcde_.A163.152.126.173.A\tp\ta\ts\ts")
+ipAddress = ""
+httpConnection = None
+print "[+] Find IP Address"
+try:
+    httpRequest = urllib2.Request("https://api.ipify.org")
+    httpConnection = urllib2.urlopen(httpRequest)
+    ipAddress = httpConnection.read()
+    print "Your IP Address is [", ipAddress, "]"
+except:
+    raise
+finally:
+    if httpConnection != None:
+        httpConnection.close()
 
-httpRequest = urllib2.Request(challengeUrl + "?val=" + param)
-CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
+print "[*] Try Challenge 11"
+challengeUrl = "http://webhacking.kr/challenge/codeing/code2.html" \
+    + "?val=" + urllib.quote("3beeef_bindon" + ipAddress + "bindon\tp\ta\ts\ts")
+httpRequest = urllib2.Request(challengeUrl)
+CookieManager.addCookie("PHPSESSID", "79d2e02ad592877ec33fb8651960469d")
 httpRequest.add_header("Cookie", CookieManager.getCookie())
 
-httpResponse = urllib2.urlopen(httpRequest).read()
-print httpResponse
+try:
+    httpConnection = urllib2.urlopen(httpRequest)
+    httpResponse = httpConnection.read()
+    print httpResponse
+except:
+    raise
+finally:
+    if httpConnection != None:
+        httpConnection.close()
