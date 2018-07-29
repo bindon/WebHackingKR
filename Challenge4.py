@@ -6,10 +6,7 @@ import base64
 
 
 challengeUrl = "http://webhacking.kr/challenge/web/web-04/index.php"
-sessionId = "d106ebfb4bba898681f92c7f5316fa6b"
-
-
-CookieManager.addCookie("PHPSESSID", sessionId)
+CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
 
 base64Text = "YzQwMzNiZmY5NGI1NjdhMTkwZTMzZmFhNTUxZjQxMWNhZWY0NDRmMg=="
 

