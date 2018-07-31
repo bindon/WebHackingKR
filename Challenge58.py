@@ -5,7 +5,7 @@ import CookieManager
 
 challengeUrl = "http://webhacking.kr/challenge/web/web-35/g1v2m2passw0rd.php"
 
-print "[*] Clear Challenge58"
+print "[*] Clear Challenge 58"
 CookieManager.addCookie("PHPSESSID", "e52509baa15ced3a5be56d2efc0239b6")
 
 httpRequest = urllib2.Request(challengeUrl)
