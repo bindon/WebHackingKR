@@ -83,4 +83,3 @@ except:
 finally:
     if httpConnection != None:
         httpConnection.close()
-
