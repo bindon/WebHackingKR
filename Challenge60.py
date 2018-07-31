@@ -1,11 +1,9 @@
 #-*- coding: utf-8 -*-
 import sys
-import threading
 import urllib2
-
+import threading
 import CookieManager
 
-createThread = None
 def requestAuth():
     while True:
         challengeUrl = "http://webhacking.kr/challenge/web/web-37/index.php?mode=auth"
